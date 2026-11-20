@@ -346,7 +346,7 @@ export default function FryDaySite() {
           <motion.div className="hero-art" initial={{ opacity: 0, scale: 0.92, rotate: 2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ duration: 0.8, delay: 0.12 }}>
             <div className="hero-art__halo" />
             <div className="hero-image-frame">
-              <Image src="/images/hero.jpg" alt="Sample burger and crispy fries artwork for Fry-Day House" fill priority sizes="(max-width: 900px) 92vw, 48vw" className="hero-image" />
+              <Image src="/images/hero.svg" alt="Sample burger and crispy fries artwork for Fry-Day House" fill priority sizes="(max-width: 900px) 92vw, 48vw" className="hero-image" />
               <div className="hero-image-shade" />
             </div>
             <div className="hero-sticker hero-sticker--top"><span>100%</span><small>CRAVE<br />WORTHY</small></div>
@@ -489,9 +489,9 @@ export default function FryDaySite() {
         <div className="container">
           <div className="gallery-heading"><SectionHeading id="gallery-title" eyebrow={pageContent.gallery.eyebrow} title={pageContent.gallery.title.toUpperCase()} description={pageContent.gallery.description} /><span className="gallery-hashtag">{pageContent.gallery.hashtag}</span></div>
           <div className="gallery-grid">
-            <figure className="gallery-photo gallery-photo--large"><Image src="/images/shop-1.jpg" alt="Sample artwork placeholder for Fry-Day House counter photography" fill sizes="(max-width: 700px) 100vw, 55vw" loading="lazy" /><figcaption><span>01 / THE COUNTER</span><strong>{pageContent.gallery.captions[0]}</strong></figcaption></figure>
-            <figure className="gallery-photo"><Image src="/images/shop-2.jpg" alt="Sample artwork placeholder for Fry-Day House outdoor seating photography" fill sizes="(max-width: 700px) 100vw, 40vw" loading="lazy" /><figcaption><span>02 / THE HANGOUT</span><strong>{pageContent.gallery.captions[1]}</strong></figcaption></figure>
-            <figure className="gallery-photo"><Image src="/images/shop-3.jpg" alt="Sample artwork placeholder for a Fry-Day House fast-food platter photo" fill sizes="(max-width: 700px) 100vw, 40vw" loading="lazy" /><figcaption><span>03 / THE GOOD STUFF</span><strong>{pageContent.gallery.captions[2]}</strong></figcaption></figure>
+            <figure className="gallery-photo gallery-photo--large"><Image src="/images/shop-1.svg" alt="Sample artwork placeholder for Fry-Day House counter photography" fill sizes="(max-width: 700px) 100vw, 55vw" loading="lazy" /><figcaption><span>01 / THE COUNTER</span><strong>{pageContent.gallery.captions[0]}</strong></figcaption></figure>
+            <figure className="gallery-photo"><Image src="/images/shop-2.svg" alt="Sample artwork placeholder for Fry-Day House outdoor seating photography" fill sizes="(max-width: 700px) 100vw, 40vw" loading="lazy" /><figcaption><span>02 / THE HANGOUT</span><strong>{pageContent.gallery.captions[1]}</strong></figcaption></figure>
+            <figure className="gallery-photo"><Image src="/images/shop-3.svg" alt="Sample artwork placeholder for a Fry-Day House fast-food platter photo" fill sizes="(max-width: 700px) 100vw, 40vw" loading="lazy" /><figcaption><span>03 / THE GOOD STUFF</span><strong>{pageContent.gallery.captions[2]}</strong></figcaption></figure>
           </div>
         </div>
       </section>
