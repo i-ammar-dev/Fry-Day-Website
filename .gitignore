@@ -7,8 +7,3 @@ build/
 .env*
 !.env.example
 .vercel
-
-# Cloudflare Workers / OpenNext
-.open-next/
-.wrangler/
-cloudflare-env.d.ts
