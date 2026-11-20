@@ -1,0 +1,93 @@
+{
+  "hero": {
+    "eyebrow": "The food chowk favourite",
+    "orderButton": "Order on WhatsApp",
+    "menuButton": "View menu",
+    "servicesLine": "Dine-in · Takeaway · Home delivery",
+    "hungerLine": "Bhook lagi? Order karo!"
+  },
+  "featured": {
+    "eyebrow": "The crowd has spoken",
+    "title": "House favourites",
+    "description": "The bites everyone comes back for. Pick your next obsession.",
+    "exploreLink": "Explore full menu"
+  },
+  "menu": {
+    "eyebrow": "Come hungry",
+    "title": "The menu",
+    "description": "Desi favourites. Street-food classics. Big flavour in every bite.",
+    "fusionLabel": "Desi Fusion favourites",
+    "searchPlaceholder": "Search your craving...",
+    "priceNote": "Prices are in PKR. Please confirm availability and delivery charges on WhatsApp."
+  },
+  "deals": {
+    "eyebrow": "Good food, better plans",
+    "title": "Deals that hit different",
+    "description": "Planning a study break, family scene or midnight snack? We got the mood.",
+    "editNote": "Deal details and prices are easy to update in data/deals.json."
+  },
+  "vibe": {
+    "eyebrow": "Made for the food chowk",
+    "titleLineOne": "Desi roots.",
+    "titleLineTwo": "Street food soul.",
+    "description": "From the first crunch to the last fry, Fry-Day House is your spot for late-night catch-ups, student hunger and family food runs.",
+    "button": "Find your favourite"
+  },
+  "howToOrder": {
+    "eyebrow": "No app drama",
+    "title": "How to order",
+    "description": "Three quick steps. Then your food is on its way.",
+    "steps": [
+      {
+        "number": "01",
+        "icon": "🍔",
+        "title": "Pick your bites",
+        "description": "Explore the menu and add your favourites to the cart."
+      },
+      {
+        "number": "02",
+        "icon": "📝",
+        "title": "Share your details",
+        "description": "Add your name, phone and delivery address or pickup preference."
+      },
+      {
+        "number": "03",
+        "icon": "💬",
+        "title": "Send on WhatsApp",
+        "description": "Your order message is ready. We confirm and sort the rest."
+      }
+    ],
+    "paymentTitle": "Easy scene, easy payment.",
+    "paymentDescription": "Cash on Delivery, JazzCash and Easypaisa options. Payment is arranged directly with the shop."
+  },
+  "gallery": {
+    "eyebrow": "The hangout spot",
+    "title": "Good food. Good company.",
+    "description": "A little street-food energy, a lot of good memories.",
+    "hashtag": "#FRYDAYHARDIN",
+    "captions": [
+      "Pull up hungry.",
+      "Stay for the vibes.",
+      "Made for the craving."
+    ]
+  },
+  "findUs": {
+    "eyebrow": "Come through",
+    "title": "Find your way to Fry-Day",
+    "description": "Meet us at the food chowk, or get the good stuff delivered to your door.",
+    "directions": "Get directions",
+    "call": "Call Fry-Day",
+    "whatsapp": "WhatsApp us",
+    "hoursTitle": "Opening hours",
+    "hoursNote": "Edit these times in data/site.json."
+  },
+  "footer": {
+    "description": "Big bites. Bold nights. Your food-chowk fix, right here in Bahawalpur.",
+    "tagline": "Fry-Day har din! 😉",
+    "explore": "Explore",
+    "contact": "Get in touch",
+    "social": "Follow the crunch",
+    "socialNote": "Social links are editable in data/site.json.",
+    "copyright": "All bites reserved."
+  }
+}
