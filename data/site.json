@@ -1,0 +1,30 @@
+{
+  "name": "Fry-Day House",
+  "logoName": "FRY'DAY HOUSE",
+  "tagline": "Fry-Day har din!",
+  "heroHeadline": "BIG BITES.\nBOLD NIGHTS.",
+  "heroDescription": "Zinger crunch, desi fusion and loaded fries at Trust Colony Food Chowk. Bring your crew. Bring your appetite.",
+  "location": "Trust Colony Food Chowk, Bahawalpur, Pakistan",
+  "phoneDisplay": "0306-7279801",
+  "phoneLink": "+923067279801",
+  "whatsappNumber": "923067279801",
+  "email": "Frydayhouse@gmail.com",
+  "services": ["Dine-in", "Takeaway", "Home delivery"],
+  "openingHours": [
+    { "day": "Monday", "hours": "Set opening hours" },
+    { "day": "Tuesday", "hours": "Set opening hours" },
+    { "day": "Wednesday", "hours": "Set opening hours" },
+    { "day": "Thursday", "hours": "Set opening hours" },
+    { "day": "Friday", "hours": "Set opening hours" },
+    { "day": "Saturday", "hours": "Set opening hours" },
+    { "day": "Sunday", "hours": "Set opening hours" }
+  ],
+  "paymentMethods": ["Cash on Delivery", "JazzCash", "Easypaisa"],
+  "featuredItemIds": ["zinger-tower-cheese", "fully-loaded", "zinger-platter", "loaded-fries", "wings", "fry-day-house-special-wrap"],
+  "mapEmbedUrl": "https://www.google.com/maps?q=Trust%20Colony%20Food%20Chowk%2C%20Bahawalpur%2C%20Pakistan&output=embed",
+  "socials": {
+    "instagram": "https://www.instagram.com/yourhandle",
+    "tiktok": "https://www.tiktok.com/@yourhandle",
+    "facebook": "https://www.facebook.com/yourpage"
+  }
+}
