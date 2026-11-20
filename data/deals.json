@@ -1,0 +1,26 @@
+[
+  {
+    "id": "student-deal",
+    "name": "Student Deal",
+    "label": "Campus favourite",
+    "description": "Add your student combo details here. Perfect for a quick break between classes.",
+    "priceLabel": "Set deal price",
+    "accent": "yellow"
+  },
+  {
+    "id": "family-platter",
+    "name": "Family Platter",
+    "label": "For the whole crew",
+    "description": "Add platter items, serving size and any family extras here.",
+    "priceLabel": "Set deal price",
+    "accent": "orange"
+  },
+  {
+    "id": "midnight-craving",
+    "name": "Midnight Craving",
+    "label": "Late-night mood",
+    "description": "Add your late-night burger, fries or wrap combo details here.",
+    "priceLabel": "Set deal price",
+    "accent": "red"
+  }
+]
