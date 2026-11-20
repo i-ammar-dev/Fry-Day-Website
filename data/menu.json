@@ -1,0 +1,105 @@
+{
+  "currency": "Rs.",
+  "categories": [
+    {
+      "id": "burgers",
+      "name": "Burgers",
+      "eyebrow": "Stacked & saucy",
+      "description": "From classic desi street bites to full-on zinger towers.",
+      "items": [
+        { "id": "sada-shami", "name": "Sada Shami", "price": 120, "tags": ["classic"], "description": "A proper desi street-food classic." },
+        { "id": "anda-shami", "name": "Anda Shami", "price": 150, "tags": ["classic"], "description": "Shami patty with a freshly cooked egg." },
+        { "id": "anda-shami-cheese", "name": "Anda Shami Cheese", "price": 220, "tags": ["cheesy"], "description": "Anda shami, finished with a melty cheese slice." },
+        { "id": "double-anda-shami", "name": "Double Anda Shami", "price": 220, "tags": ["classic"], "description": "Double the desi sandwich satisfaction." },
+        { "id": "chicken-burger", "name": "Chicken", "price": 230, "tags": ["classic"], "description": "A crispy chicken patty in a soft bun." },
+        { "id": "chicken-anda", "name": "Chicken Anda", "price": 260, "tags": ["classic"], "description": "Chicken patty with a freshly cooked egg." },
+        { "id": "chicken-cheese", "name": "Chicken Cheese", "price": 280, "tags": ["cheesy"], "description": "Chicken burger with a cheesy finish." },
+        { "id": "zinger", "name": "Zinger", "price": 300, "tags": ["spicy"], "description": "Crunchy zinger fillet, fresh crunch and house sauce." },
+        { "id": "zinger-cheese", "name": "Zinger Cheese", "price": 340, "tags": ["spicy", "cheesy"], "description": "Our crispy zinger with a layer of cheese." },
+        { "id": "zinger-tower-cheese", "name": "Zinger Tower Cheese Burger", "price": 480, "tags": ["spicy", "cheesy", "popular"], "description": "A tall, cheesy zinger build for serious hunger." },
+        { "id": "kababish-burger", "name": "Kababish", "price": 250, "tags": ["desi-fusion"], "description": "A desi kabab-style burger with house seasoning." },
+        { "id": "chapli-kabab-burger", "name": "Chapli Kabab", "price": 250, "tags": ["desi-fusion"], "description": "Chapli kabab flavour meets burger-night energy." },
+        { "id": "mighty", "name": "Mighty", "price": 480, "tags": ["popular", "spicy"], "description": "A mighty-sized bite for a mighty appetite." },
+        { "id": "fully-loaded", "name": "Fully Loaded Burger", "price": 370, "tags": ["popular", "cheesy"], "description": "Loaded layers, bold sauces and a big bite." },
+        { "id": "patty", "name": "Patty", "price": 260, "tags": ["classic"], "description": "A satisfying house-style patty burger." },
+        { "id": "patty-zinger", "name": "Patty Zinger", "price": 270, "tags": ["spicy"], "description": "A flavour-packed mash-up of patty and zinger." }
+      ]
+    },
+    {
+      "id": "parathas",
+      "name": "Parathas & Wraps",
+      "eyebrow": "Rolled with attitude",
+      "description": "Flaky parathas and big wraps, made for a proper hunger fix.",
+      "items": [
+        { "id": "chicken-paratha", "name": "Chicken Paratha", "price": 270, "tags": ["classic"], "description": "Chicken filling tucked into a flaky paratha." },
+        { "id": "zinger-paratha", "name": "Zinger Paratha", "price": 320, "tags": ["spicy"], "description": "Crunchy zinger wrapped up in a paratha." },
+        { "id": "chicken-cheese-paratha", "name": "Chicken Cheese Paratha", "price": 320, "tags": ["cheesy"], "description": "Chicken and cheese in a golden paratha." },
+        { "id": "zinger-cheese-paratha", "name": "Zinger Cheese Paratha", "price": 370, "tags": ["spicy", "cheesy"], "description": "Zinger crunch with extra cheesy goodness." },
+        { "id": "chapli-paratha", "name": "Chapli Paratha", "price": 240, "tags": ["desi-fusion"], "description": "A chapli kabab twist rolled into a paratha." },
+        { "id": "kababish-paratha", "name": "Kababish Paratha", "price": 260, "tags": ["desi-fusion"], "description": "Kababish flavour wrapped in flaky layers." },
+        { "id": "tortilla-wrap", "name": "Tortilla Wrap", "price": 420, "tags": ["popular"], "description": "A generous tortilla wrap with a flavour-packed filling." },
+        { "id": "fry-day-house-special-wrap", "name": "Fry Day House Special Wrap", "price": 470, "tags": ["popular", "desi-fusion"], "description": "Our signature wrap, packed for a big appetite." }
+      ]
+    },
+    {
+      "id": "shawarmas",
+      "name": "Shawarmas",
+      "eyebrow": "Saucy street rolls",
+      "description": "Classic shawarma comfort with a Fry-Day twist.",
+      "items": [
+        { "id": "chicken-shawarma", "name": "Chicken Shawarma", "price": 160, "tags": ["classic"], "description": "Chicken, fresh salad and creamy house sauce." },
+        { "id": "chicken-cheese-shawarma", "name": "Chicken Cheese Shawarma", "price": 240, "tags": ["cheesy"], "description": "Chicken shawarma with melted cheese." },
+        { "id": "chapli-kabab-shawarma", "name": "Chapli Kabab Shawarma", "price": 220, "tags": ["desi-fusion"], "description": "A bold chapli kabab spin on a street classic." },
+        { "id": "zinger-shawarma", "name": "Zinger Shawarma", "price": 270, "tags": ["spicy"], "description": "Crunchy zinger in a soft shawarma wrap." },
+        { "id": "zinger-cheese-shawarma", "name": "Zinger Cheese Shawarma", "price": 320, "tags": ["spicy", "cheesy"], "description": "Zinger crunch with a cheesy, saucy finish." },
+        { "id": "kababish-shawarma", "name": "Kababish Shawarma", "price": 240, "tags": ["desi-fusion"], "description": "Kababish flavour with all the shawarma vibes." },
+        { "id": "kababish-cheese-shawarma", "name": "Kababish Cheese Shawarma", "price": 280, "tags": ["desi-fusion", "cheesy"], "description": "Kababish and cheese rolled into one." }
+      ]
+    },
+    {
+      "id": "finger-fries",
+      "name": "Finger Fries",
+      "eyebrow": "Crunch time",
+      "description": "A little side, or a whole loaded situation.",
+      "items": [
+        { "id": "loaded-fries", "name": "Loaded Fries", "price": 320, "tags": ["popular", "cheesy"], "description": "Fries piled high with flavour and house toppings." },
+        { "id": "zinger-loaded-fries", "name": "Zinger Loaded Fries", "price": 420, "tags": ["popular", "spicy"], "description": "Loaded fries topped with crispy zinger pieces." },
+        { "id": "chicken-loaded-fries", "name": "Chicken Loaded Fries", "price": 370, "tags": ["cheesy"], "description": "Golden fries with a chicken-loaded topping." },
+        { "id": "french-fries", "name": "French Fries", "price": 100, "tags": ["classic", "veg"], "description": "Golden, salty and made for sharing.", "variants": [{ "id": "small", "label": "Small", "price": 100 }, { "id": "large", "label": "Large", "price": 200 }] }
+      ]
+    },
+    {
+      "id": "platters",
+      "name": "Platters",
+      "eyebrow": "The full scene",
+      "description": "Big plates for hungry people and good company.",
+      "items": [
+        { "id": "zinger-platter", "name": "Zinger Platter", "price": 470, "tags": ["popular", "spicy"], "description": "Shawarma breads with zinger finger, dip sauce, salad and fries." },
+        { "id": "chicken-shawarma-platter", "name": "Chicken Shawarma Platter", "price": 420, "tags": ["popular"], "description": "Shawarma breads with tikka chicken cubes, dip sauce, salad and fries." }
+      ]
+    },
+    {
+      "id": "broast",
+      "name": "Broast",
+      "eyebrow": "Golden & crispy",
+      "description": "Crispy chicken for the proper fried-chicken mood.",
+      "items": [
+        { "id": "jumbo-chest-piece", "name": "Jumbo Chest Piece", "price": 450, "tags": ["popular"], "description": "A jumbo crispy chest piece." },
+        { "id": "jumbo-leg-piece", "name": "Jumbo Leg Piece", "price": 350, "tags": ["popular"], "description": "A juicy leg piece with a golden crunch." }
+      ]
+    },
+    {
+      "id": "sides",
+      "name": "Sides & Extras",
+      "eyebrow": "Make it a combo",
+      "description": "The extra bites and dips that complete the order.",
+      "items": [
+        { "id": "zinger-fillet", "name": "Zinger Fillet", "price": 220, "tags": ["spicy"], "description": "A crispy zinger fillet on its own." },
+        { "id": "wings", "name": "Wings", "price": 270, "tags": ["popular", "spicy"], "description": "Wings for sharing (or not).", "variants": [{ "id": "regular", "label": "Regular", "price": 270 }, { "id": "large", "label": "Large", "price": 470 }] },
+        { "id": "nuggets", "name": "Nuggets", "price": 240, "tags": ["classic"], "description": "Crispy golden nuggets.", "variants": [{ "id": "regular", "label": "Regular", "price": 240 }, { "id": "large", "label": "Large", "price": 420 }] },
+        { "id": "cheese-slice", "name": "Cheese Slice", "price": 50, "tags": ["cheesy"], "description": "Add a little extra cheese." },
+        { "id": "dip-sauce", "name": "Dip Sauce", "price": 50, "tags": ["classic"], "description": "An extra pot of house dip sauce." }
+      ]
+    }
+  ]
+}
