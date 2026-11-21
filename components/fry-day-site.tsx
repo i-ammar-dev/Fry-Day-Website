@@ -4,13 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
-import { deals, formatPrice, pageContent, siteConfig } from "@/lib/data";
+import { formatPrice, pageContent, siteConfig } from "@/lib/data";
 import { ITEM_BY_ID, type MenuItem } from "@/data/menu";
 import { plainInput, useCart } from "@/lib/cart";
 import { money } from "@/lib/order";
 import MenuApp from "@/components/menu/MenuApp";
 import StatusChip from "@/components/menu/StatusChip";
 import SitePhotoGallery from "@/components/site-photo-gallery";
+import ComboDeals from "@/components/menu/ComboDeals";
 
 function Logo() {
   return (
@@ -173,24 +174,7 @@ export default function FryDaySite() {
       </section>
 
       <section className="deals-section section-pad" id="deals" aria-labelledby="deals-title">
-        <div className="container">
-          <div className="deals-header">
-            <SectionHeading id="deals-title" eyebrow={pageContent.deals.eyebrow} title={pageContent.deals.title.toUpperCase()} description={pageContent.deals.description} />
-            <div className="deal-stamp" aria-hidden="true"><span>GOOD</span><strong>FOOD</strong><span>GOOD MOOD</span></div>
-          </div>
-          <div className="deals-grid">
-            {deals.map((deal, index) => (
-              <motion.article className={`deal-card deal-card--${deal.accent}`} key={deal.id} whileHover={{ y: -6 }}>
-                <div className="deal-card__top"><span className="deal-number">0{index + 1}</span><span className="deal-label">{deal.label}</span></div>
-                <div className="deal-card__illustration" aria-hidden="true">{index === 0 ? "🎓" : index === 1 ? "🍗" : "🌙"}</div>
-                <h3>{deal.name}</h3>
-                <p>{deal.description}</p>
-                <div className="deal-card__bottom"><strong>{deal.priceLabel}</strong><a href={`https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(`Hi Fry-Day House! I would like to ask about the ${deal.name}.`)}`} target="_blank" rel="noreferrer">Ask about deal <span>↗</span></a></div>
-              </motion.article>
-            ))}
-          </div>
-          <p className="deals-edit-note">{pageContent.deals.editNote}</p>
-        </div>
+        <ComboDeals eyebrow={pageContent.deals.eyebrow} title={pageContent.deals.title} description={pageContent.deals.description} />
       </section>
 
       <section className="desi-strip" id="story">
@@ -272,4 +256,3 @@ export default function FryDaySite() {
     </main>
   );
 }
-

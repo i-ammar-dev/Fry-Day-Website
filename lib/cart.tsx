@@ -12,6 +12,9 @@ import {
 } from "react";
 import { SITE } from "@/config/site";
 import { ITEM_BY_ID, basePrice, type MenuItem } from "@/data/menu";
+import { COMBOS } from "@/config/combos";
+
+export type ComboSelection = LineInput & { slotLabel: string };
 
 export type CartLine = {
   key: string;
@@ -23,6 +26,9 @@ export type CartLine = {
   notes: string;
   unitPrice: number;
   qty: number;
+  kind?: "combo";
+  comboId?: string;
+  comboSelections?: ComboSelection[];
 };
 
 export type LineInput = Omit<CartLine, "key" | "qty" | "unitPrice">;
@@ -116,6 +122,8 @@ type CartApi = {
   clear: () => void;
   qtyForItem: (itemId: string) => number;
   qtyForSize: (itemId: string, sizeIndex: number) => number;
+  addCombo: (comboId: string, selections: ComboSelection[]) => void;
+  qtyForCombo: (comboId: string) => number;
 };
 
 const CartContext = createContext<CartApi | null>(null);
@@ -138,6 +146,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }>;
         if (Array.isArray(parsed)) {
           const restored = parsed.flatMap((saved): CartLine[] => {
+            if (saved.kind === "combo" && typeof saved.comboId === "string" && Array.isArray(saved.comboSelections)) {
+              const combo = COMBOS.find((candidate) => candidate.id === saved.comboId);
+              if (!combo || !Number.isFinite(Number(saved.qty)) || Number(saved.qty) < 1) return [];
+              const selections = saved.comboSelections.filter((part): part is ComboSelection => !!part && typeof part.itemId === "string" && !!ITEM_BY_ID[part.itemId]);
+              const expected = combo.slots.reduce((n, slot) => n + slot.count, 0);
+              if (selections.length !== expected) return [];
+              const extras = selections.reduce((sum, part) => sum + part.extras.reduce((n, id) => n + (SITE.extras.find((e) => e.id === id)?.price ?? 0), 0), 0);
+              const key = `combo|${combo.id}|${JSON.stringify(selections.map((s) => ({ ...s, extras: [...s.extras].sort(), removals: [...s.removals].sort() })))}`;
+              return [{ key, itemId: `combo:${combo.id}`, sizeIndex: null, spice: null, extras: [], removals: [], notes: "", qty: Number(saved.qty), unitPrice: combo.price + extras, kind: "combo", comboId: combo.id, comboSelections: selections }];
+            }
             const item = saved.itemId ? ITEM_BY_ID[saved.itemId] : undefined;
             if (!item) return [];
 
@@ -235,11 +253,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
       removeOne,
       clear,
       qtyForItem: (itemId) =>
-        lines.filter((l) => l.itemId === itemId).reduce((n, l) => n + l.qty, 0),
+        lines.filter((l) => !l.kind && l.itemId === itemId).reduce((n, l) => n + l.qty, 0),
       qtyForSize: (itemId, sizeIndex) =>
         lines
           .filter((l) => l.itemId === itemId && l.sizeIndex === sizeIndex)
           .reduce((n, l) => n + l.qty, 0),
+      addCombo: (comboId, selections) => {
+        const combo = COMBOS.find((c) => c.id === comboId);
+        if (!combo) return;
+        const extras = selections.reduce((sum, part) => sum + part.extras.reduce((s, id) => s + (SITE.extras.find((e) => e.id === id)?.price ?? 0), 0), 0);
+        const normalized = selections.map((s) => ({ ...s, extras: [...s.extras].sort(), removals: [...s.removals].sort() }));
+        const key = `combo|${comboId}|${JSON.stringify(normalized)}`;
+        dispatch({ type: "add", line: { key, itemId: `combo:${comboId}`, sizeIndex: null, spice: null, extras: [], removals: [], notes: "", qty: 1, unitPrice: combo.price + extras, kind: "combo", comboId, comboSelections: selections } });
+      },
+      qtyForCombo: (comboId) => lines.filter((l) => l.kind === "combo" && l.comboId === comboId).reduce((n, l) => n + l.qty, 0),
     };
   }, [lines, ready, isCartOpen, add, setQty, removeOne, clear]);
 

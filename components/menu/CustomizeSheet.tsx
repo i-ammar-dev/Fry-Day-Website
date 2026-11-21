@@ -9,16 +9,20 @@ import { money } from "@/lib/order";
 export default function CustomizeSheet({
   item,
   onClose,
+  onConfirm,
+  initialQuantity = 1,
 }: {
   item: MenuItem;
   onClose: () => void;
+  onConfirm?: (input: LineInput, qty: number) => void;
+  initialQuantity?: number;
 }) {
   const cart = useCart();
   const [spice, setSpice] = useState<string>(SITE.defaultSpice);
   const [extras, setExtras] = useState<string[]>([]);
   const [removals, setRemovals] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
-  const [qty, setQty] = useState(1);
+  const [qty, setQty] = useState(initialQuantity);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -49,7 +53,8 @@ export default function CustomizeSheet({
       removals,
       notes,
     };
-    cart.add(input, qty);
+    if (onConfirm) onConfirm(input, qty);
+    else cart.add(input, qty);
     onClose();
   };
 

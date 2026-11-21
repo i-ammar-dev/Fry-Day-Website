@@ -28,6 +28,7 @@ export default function ItemCard({
   const cart = useCart();
   const sized = Array.isArray(item.price);
   const [size, setSize] = useState(0);
+  const [photoOpen, setPhotoOpen] = useState(false);
 
   const total = cart.qtyForItem(item.id);
   const selected = total > 0;
@@ -57,7 +58,9 @@ export default function ItemCard({
       }`}
     >
       <div className="relative">
-        <FoodImage id={item.imageId} name={item.name} category={item.category} />
+        <button type="button" onClick={() => setPhotoOpen(true)} className="block w-full text-left" aria-label={`Preview ${item.name} photo`}>
+          <FoodImage id={item.imageId} name={item.name} category={item.category} />
+        </button>
         {bestSeller && (
           <span className="absolute left-2 top-2 rounded-full bg-[#FF6A00] px-2 py-0.5 text-[11px] font-bold text-black">
             🔥 Best Seller
@@ -73,6 +76,19 @@ export default function ItemCard({
           </span>
         )}
       </div>
+
+      {photoOpen && (
+        <div className="fixed inset-0 z-[65] flex items-end justify-center sm:items-center" role="dialog" aria-modal="true" aria-label={`${item.name} preview`}>
+          <button aria-label="Close preview" className="absolute inset-0 bg-black/80" onClick={() => setPhotoOpen(false)} />
+          <div className="relative w-full max-w-md overflow-hidden rounded-t-3xl border border-[#FF6A00]/40 bg-[#101010] sm:rounded-3xl">
+            <div className="relative"><FoodImage id={item.imageId} name={item.name} category={item.category} /></div>
+            <div className="p-5"><div className="flex items-start justify-between gap-3"><div><h2 className="font-display text-2xl text-[#F5B800]">{item.name}</h2><p className="mt-1 text-sm text-[#FFF4DC]/65">{item.description}</p></div><button onClick={() => setPhotoOpen(false)} aria-label="Close" className="min-h-[44px] min-w-[44px] text-2xl text-[#FFF4DC]/70">×</button></div>
+              <p className="my-4 font-display text-xl text-[#F5B800]">{sized ? `from ${money(basePrice(item, 0))}` : money(basePrice(item, null))}</p>
+              <button onClick={() => { setPhotoOpen(false); if (item.customizable) onCustomize(item); else addDirect(); }} className="min-h-[48px] w-full rounded-xl bg-[#F5B800] font-extrabold text-black">{item.customizable ? "Add or customize" : "Add to cart"}</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="flex flex-1 flex-col gap-2 p-3">
         <div className="flex flex-wrap gap-1">
