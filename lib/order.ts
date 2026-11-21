@@ -1,6 +1,7 @@
 import { SITE } from "@/config/site";
 import { ITEM_BY_ID } from "@/data/menu";
 import type { CartLine } from "./cart";
+import { COMBOS } from "@/config/combos";
 
 export type Mode = "delivery" | "pickup";
 
@@ -20,6 +21,7 @@ export function computeTotals(subtotal: number, mode: Mode) {
 export const money = (n: number) => `${SITE.currency} ${n.toLocaleString("en-PK")}`;
 
 export function lineTitle(l: CartLine): string {
+  if (l.kind === "combo") return COMBOS.find((c) => c.id === l.comboId)?.name ?? "Combo";
   const item = ITEM_BY_ID[l.itemId];
   const size = item?.sizeLabels && l.sizeIndex !== null ? ` (${item.sizeLabels[l.sizeIndex]})` : "";
   return `${item?.name ?? l.itemId}${size}`;
@@ -27,6 +29,15 @@ export function lineTitle(l: CartLine): string {
 
 export function lineOptions(l: CartLine): string[] {
   const out: string[] = [];
+  if (l.kind === "combo") {
+    for (const part of l.comboSelections ?? []) {
+      const item = ITEM_BY_ID[part.itemId];
+      const size = item?.sizeLabels && part.sizeIndex !== null ? ` (${item.sizeLabels[part.sizeIndex]})` : "";
+      const details = [part.spice ? `${part.spice} spice` : "", ...part.extras.map((id) => SITE.extras.find((e) => e.id === id)?.label ?? id), ...part.removals, part.notes.trim() ? `Note: ${part.notes.trim()}` : ""].filter(Boolean);
+      out.push(`${part.slotLabel}: ${item?.name ?? part.itemId}${size}${details.length ? ` [${details.join(", ")}]` : ""}`);
+    }
+    return out;
+  }
   if (l.spice) out.push(`${l.spice} spice`);
   for (const id of l.extras) {
     const e = SITE.extras.find((x) => x.id === id);
