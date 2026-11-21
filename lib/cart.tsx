@@ -253,11 +253,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
       removeOne,
       clear,
       qtyForItem: (itemId) =>
-        lines.filter((l) => !l.kind && l.itemId === itemId).reduce((n, l) => n + l.qty, 0),
+        lines.reduce((n, l) => n + (l.kind === "combo"
+          ? (l.comboSelections ?? []).filter((part) => part.itemId === itemId).length * l.qty
+          : l.itemId === itemId ? l.qty : 0), 0),
       qtyForSize: (itemId, sizeIndex) =>
-        lines
-          .filter((l) => l.itemId === itemId && l.sizeIndex === sizeIndex)
-          .reduce((n, l) => n + l.qty, 0),
+        lines.reduce((n, l) => n + (l.kind === "combo"
+          ? (l.comboSelections ?? []).filter((part) => part.itemId === itemId && part.sizeIndex === sizeIndex).length * l.qty
+          : l.itemId === itemId && l.sizeIndex === sizeIndex ? l.qty : 0), 0),
       addCombo: (comboId, selections) => {
         const combo = COMBOS.find((c) => c.id === comboId);
         if (!combo) return;
