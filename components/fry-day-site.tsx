@@ -3,15 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
-import { allMenuItems, deals, formatPrice, menuCategories, pageContent, siteConfig } from "@/lib/data";
-import type { CartLine, MenuItem, MenuVariant } from "@/lib/types";
-
-type OrderType = "Home delivery" | "Takeaway" | "Dine-in";
-type PaymentMethod = "Cash on Delivery" | "JazzCash" | "Easypaisa";
-
-const CART_STORAGE_KEY = "fry-day-house-cart-v1";
-const CUSTOMER_STORAGE_KEY = "fry-day-house-customer-v1";
+import { useMemo, useState } from "react";
+import { deals, formatPrice, pageContent, siteConfig } from "@/lib/data";
+import { ITEM_BY_ID, type MenuItem } from "@/data/menu";
+import { plainInput, useCart } from "@/lib/cart";
+import { money } from "@/lib/order";
+import MenuApp from "@/components/menu/MenuApp";
+import StatusChip from "@/components/menu/StatusChip";
 
 function Logo() {
   return (
@@ -55,19 +53,6 @@ function Price({ amount }: { amount: number }) {
   return <span className="price">{formatPrice(amount)}</span>;
 }
 
-function MenuTag({ tag }: { tag: string }) {
-  const labels: Record<string, string> = {
-    spicy: "Spicy",
-    veg: "Veg",
-    veggie: "Veg",
-    "desi-fusion": "Desi Fusion",
-    popular: "Fave",
-    cheesy: "Cheesy",
-    classic: "Classic",
-  };
-  return <span className={`menu-tag menu-tag--${tag}`}>{labels[tag] ?? tag}</span>;
-}
-
 function WhatsAppIcon({ size = 20 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -77,220 +62,23 @@ function WhatsAppIcon({ size = 20 }: { size?: number }) {
   );
 }
 
-function MenuCard({
-  item,
-  selectedVariantId,
-  onVariantChange,
-  onAdd,
-}: {
-  item: MenuItem;
-  selectedVariantId?: string;
-  onVariantChange: (itemId: string, variantId: string) => void;
-  onAdd: (item: MenuItem, variant?: MenuVariant) => void;
-}) {
-  const selectedVariant = item.variants?.find((variant) => variant.id === selectedVariantId) ?? item.variants?.[0];
-  const itemPrice = selectedVariant?.price ?? item.price;
-
-  return (
-    <motion.article className="menu-card" layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-      <div className="menu-card__topline">
-        <div className="menu-card__tags">
-          {item.tags.slice(0, 2).map((tag) => <MenuTag key={tag} tag={tag} />)}
-        </div>
-        <span className="menu-card__spark" aria-hidden="true">✳</span>
-      </div>
-      <div className="menu-card__body">
-        <h4>{item.name}</h4>
-        <p>{item.description}</p>
-      </div>
-      <div className="menu-card__bottom">
-        <div className="menu-card__price-wrap">
-          <Price amount={itemPrice} />
-          {item.variants ? (
-            <label className="variant-select-label">
-              <span className="sr-only">Choose size for {item.name}</span>
-              <select
-                value={selectedVariant?.id ?? item.variants[0].id}
-                onChange={(event) => onVariantChange(item.id, event.target.value)}
-                aria-label={`Choose size for ${item.name}`}
-              >
-                {item.variants.map((variant) => (
-                  <option key={variant.id} value={variant.id}>{variant.label} · {formatPrice(variant.price)}</option>
-                ))}
-              </select>
-            </label>
-          ) : null}
-        </div>
-        <button className="add-button" type="button" onClick={() => onAdd(item, selectedVariant)} aria-label={`Add ${item.name} to cart`}>
-          <span>Add</span><b>＋</b>
-        </button>
-      </div>
-    </motion.article>
-  );
-}
-
 export default function FryDaySite() {
-  const [cart, setCart] = useState<CartLine[]>([]);
-  const [cartHydrated, setCartHydrated] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState(menuCategories[0]?.id ?? "burgers");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
-  const [orderType, setOrderType] = useState<OrderType>("Home delivery");
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("Cash on Delivery");
-  const [customerName, setCustomerName] = useState("");
-  const [customerPhone, setCustomerPhone] = useState("");
-  const [customerAddress, setCustomerAddress] = useState("");
-  const [orderNotes, setOrderNotes] = useState("");
-  const [formError, setFormError] = useState("");
+  const cart = useCart();
   const [toast, setToast] = useState("");
 
-  useEffect(() => {
-    try {
-      const savedCart = window.localStorage.getItem(CART_STORAGE_KEY);
-      const savedCustomer = window.localStorage.getItem(CUSTOMER_STORAGE_KEY);
-      if (savedCart) {
-        const parsed = JSON.parse(savedCart) as CartLine[];
-        if (Array.isArray(parsed)) setCart(parsed);
-      }
-      if (savedCustomer) {
-        const details = JSON.parse(savedCustomer) as {
-          name?: string; phone?: string; address?: string; notes?: string; orderType?: OrderType; paymentMethod?: PaymentMethod;
-        };
-        setCustomerName(details.name ?? "");
-        setCustomerPhone(details.phone ?? "");
-        setCustomerAddress(details.address ?? "");
-        setOrderNotes(details.notes ?? "");
-        if (details.orderType) setOrderType(details.orderType);
-        if (details.paymentMethod) setPaymentMethod(details.paymentMethod);
-      }
-    } catch {
-      window.localStorage.removeItem(CART_STORAGE_KEY);
-      window.localStorage.removeItem(CUSTOMER_STORAGE_KEY);
-    } finally {
-      setCartHydrated(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!cartHydrated) return;
-    window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
-    window.localStorage.setItem(CUSTOMER_STORAGE_KEY, JSON.stringify({
-      name: customerName,
-      phone: customerPhone,
-      address: customerAddress,
-      notes: orderNotes,
-      orderType,
-      paymentMethod,
-    }));
-  }, [cart, cartHydrated, customerName, customerPhone, customerAddress, orderNotes, orderType, paymentMethod]);
-
   const featuredItems = useMemo(
-    () => siteConfig.featuredItemIds.map((id) => allMenuItems.find((item) => item.id === id)).filter((item): item is MenuItem => Boolean(item)),
+    () => siteConfig.featuredItemIds.map((id) => ITEM_BY_ID[id]).filter((item): item is MenuItem => Boolean(item)),
     [],
   );
-
-  const filteredCategories = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
-    if (!query) return menuCategories;
-    return menuCategories
-      .map((category) => ({
-        ...category,
-        items: category.items.filter((item) =>
-          `${item.name} ${item.description} ${item.tags.join(" ")}`.toLowerCase().includes(query),
-        ),
-      }))
-      .filter((category) => category.items.length > 0);
-  }, [searchQuery]);
-
-  const cartCount = cart.reduce((sum, line) => sum + line.quantity, 0);
-  const cartTotal = cart.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0);
 
   function showToast(message: string) {
     setToast(message);
     window.setTimeout(() => setToast(""), 2400);
   }
 
-  function addToCart(item: MenuItem, variant?: MenuVariant) {
-    const lineId = `${item.id}${variant ? `-${variant.id}` : ""}`;
-    const unitPrice = variant?.price ?? item.price;
-    setCart((current) => {
-      const existing = current.find((line) => line.lineId === lineId);
-      if (existing) {
-        return current.map((line) => line.lineId === lineId ? { ...line, quantity: line.quantity + 1 } : line);
-      }
-      return [...current, {
-        lineId,
-        itemId: item.id,
-        name: item.name,
-        variantId: variant?.id,
-        variantLabel: variant?.label,
-        unitPrice,
-        quantity: 1,
-      }];
-    });
+  function addToCart(item: MenuItem) {
+    cart.add(plainInput(item, Array.isArray(item.price) ? 0 : null));
     showToast(`${item.name} added to your order`);
-  }
-
-  function changeQuantity(lineId: string, amount: number) {
-    setCart((current) => current
-      .map((line) => line.lineId === lineId ? { ...line, quantity: line.quantity + amount } : line)
-      .filter((line) => line.quantity > 0));
-  }
-
-  function removeLine(lineId: string) {
-    setCart((current) => current.filter((line) => line.lineId !== lineId));
-  }
-
-  function whatsappOrderMessage() {
-    const itemLines = cart.map((line) => {
-      const variant = line.variantLabel ? ` (${line.variantLabel})` : "";
-      return `• ${line.name}${variant} × ${line.quantity} = ${formatPrice(line.unitPrice * line.quantity)}`;
-    }).join("\n");
-    return [
-      "FRY'DAY HOUSE — NEW ORDER",
-      "",
-      "ORDER ITEMS",
-      itemLines || "No items selected",
-      "",
-      `TOTAL: ${formatPrice(cartTotal)}`,
-      "",
-      `Name: ${customerName || "Not provided"}`,
-      `Phone: ${customerPhone || "Not provided"}`,
-      `Order type: ${orderType}`,
-      `Delivery address: ${customerAddress || "Not applicable / not provided"}`,
-      `Payment preference: ${paymentMethod}`,
-      `Notes: ${orderNotes || "None"}`,
-      "",
-      "Please confirm my order and let me know the delivery charges / estimated time. Thank you!",
-    ].join("\n");
-  }
-
-  function sendWhatsAppOrder() {
-    if (cart.length === 0) {
-      setFormError("Add something delicious to your cart first.");
-      return;
-    }
-    if (!customerName.trim() || !customerPhone.trim()) {
-      setFormError("Please add your name and phone number to continue.");
-      return;
-    }
-    if (orderType === "Home delivery" && !customerAddress.trim()) {
-      setFormError("Please add your delivery address.");
-      return;
-    }
-    setFormError("");
-    const url = `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(whatsappOrderMessage())}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-  }
-
-  function jumpToCategory(categoryId: string) {
-    setActiveCategory(categoryId);
-    document.getElementById(`menu-${categoryId}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  function changeVariant(itemId: string, variantId: string) {
-    setSelectedVariants((current) => ({ ...current, [itemId]: variantId }));
   }
 
   const directWhatsApp = `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent("Hi Fry-Day House! I would like to ask about your menu.")}`;
@@ -311,9 +99,10 @@ export default function FryDaySite() {
             <a href="#find-us">Find us</a>
           </nav>
           <div className="header-actions">
+            <StatusChip />
             <a className="header-order-link" href={directWhatsApp} target="_blank" rel="noreferrer"><WhatsAppIcon size={17} /> Order now</a>
-            <button className="cart-trigger" type="button" onClick={() => setCartOpen(true)} aria-label={`Open cart, ${cartCount} items`}>
-              <span className="cart-trigger__icon">▣</span><span className="cart-trigger__label">Cart</span><b>{cartCount}</b>
+            <button className="cart-trigger" type="button" onClick={cart.openCart} aria-label={`Open cart, ${cart.count} items`}>
+              <span className="cart-trigger__icon">▣</span><span className="cart-trigger__label">Cart</span><b>{cart.count}</b>
             </button>
           </div>
         </div>
@@ -368,7 +157,7 @@ export default function FryDaySite() {
           </div>
           <div className="featured-scroll" role="list" aria-label="Best selling menu items">
             {featuredItems.map((item, index) => {
-              const variant = item.variants?.[0];
+              const featuredPrice = Array.isArray(item.price) ? item.price[0] : item.price;
               return (
                 <motion.article className={`featured-card featured-card--${index % 3}`} key={item.id} role="listitem" whileHover={{ y: -7 }} transition={{ type: "spring", stiffness: 260, damping: 18 }}>
                   <div className="featured-card__number">0{index + 1}</div>
@@ -378,9 +167,9 @@ export default function FryDaySite() {
                   </div>
                   <div className="featured-card__content">
                     <div><span className="mini-label">FRY-DAY PICK</span><h3>{item.name}</h3></div>
-                    <Price amount={variant?.price ?? item.price} />
+                    <Price amount={featuredPrice} />
                   </div>
-                  <button type="button" className="featured-add" onClick={() => addToCart(item, variant)}>Add to cart <span>＋</span></button>
+                  <button type="button" className="featured-add" onClick={() => addToCart(item)}>Add to cart <span>＋</span></button>
                 </motion.article>
               );
             })}
@@ -390,55 +179,7 @@ export default function FryDaySite() {
       </section>
 
       <section className="menu-section section-pad" id="menu" aria-labelledby="menu-title">
-        <div className="container">
-          <SectionHeading id="menu-title" eyebrow={pageContent.menu.eyebrow} title={pageContent.menu.title.toUpperCase()} description={pageContent.menu.description} align="center" />
-          <div className="menu-callout"><span>✳</span><strong>{pageContent.menu.fusionLabel.toUpperCase()}</strong><small>Zinger · Anda Shami · Chapli Kabab · Kababish · Shawarma</small><span>✳</span></div>
-          <div className="menu-toolbar">
-            <div className="menu-tabs" role="navigation" aria-label="Menu categories">
-              {menuCategories.map((category) => (
-                <button
-                  key={category.id}
-                  type="button"
-                  className={activeCategory === category.id ? "menu-tab is-active" : "menu-tab"}
-                  onClick={() => jumpToCategory(category.id)}
-                >{category.name}</button>
-              ))}
-            </div>
-            <label className="menu-search">
-              <span aria-hidden="true">⌕</span>
-              <span className="sr-only">Search menu</span>
-              <input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder={pageContent.menu.searchPlaceholder} />
-              {searchQuery ? <button type="button" onClick={() => setSearchQuery("")} aria-label="Clear search">×</button> : null}
-            </label>
-          </div>
-
-          {filteredCategories.length === 0 ? (
-            <div className="empty-search"><span>🍟</span><h3>No bites found.</h3><p>Try another search. Your craving is out there.</p></div>
-          ) : (
-            <div className="menu-category-list">
-              {filteredCategories.map((category) => (
-                <section className="menu-category" id={`menu-${category.id}`} key={category.id} aria-labelledby={`category-${category.id}`}>
-                  <div className="menu-category__heading">
-                    <div><span className="mini-label">{category.eyebrow}</span><h3 id={`category-${category.id}`}>{category.name}</h3></div>
-                    <p>{category.description}</p>
-                  </div>
-                  <div className="menu-grid">
-                    {category.items.map((item) => (
-                      <MenuCard
-                        key={item.id}
-                        item={item}
-                        selectedVariantId={selectedVariants[item.id]}
-                        onVariantChange={changeVariant}
-                        onAdd={addToCart}
-                      />
-                    ))}
-                  </div>
-                </section>
-              ))}
-            </div>
-          )}
-          <div className="menu-bottom-note"><span>!</span> {pageContent.menu.priceNote}</div>
-        </div>
+        <MenuApp />
       </section>
 
       <section className="deals-section section-pad" id="deals" aria-labelledby="deals-title">
@@ -524,43 +265,13 @@ export default function FryDaySite() {
         <div className="container footer-bottom"><span>© {new Date().getFullYear()} Fry-Day House. {pageContent.footer.copyright}</span><span>BAHAWALPUR, PAKISTAN <b>✳</b></span></div>
       </footer>
 
-      <a className="floating-whatsapp" href={directWhatsApp} target="_blank" rel="noreferrer" aria-label="Chat with Fry-Day House on WhatsApp"><WhatsAppIcon size={25} /><span>Order on WhatsApp</span></a>
-
-      <AnimatePresence>
-        {cartOpen ? (
-          <>
-            <motion.button className="cart-backdrop" type="button" aria-label="Close cart" onClick={() => setCartOpen(false)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
-            <motion.aside className="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title" initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ type: "spring", stiffness: 300, damping: 32 }}>
-              <div className="cart-drawer__header"><div><span className="mini-label">YOUR FRY-DAY PICKS</span><h2 id="cart-title">Your cart <span>({cartCount})</span></h2></div><button type="button" className="icon-button" onClick={() => setCartOpen(false)} aria-label="Close cart">×</button></div>
-              <div className="cart-drawer__body">
-                {cart.length === 0 ? (
-                  <div className="cart-empty"><span>🍟</span><h3>Your cart is hungry.</h3><p>Add a few favourites and they&apos;ll show up here.</p><button type="button" className="button button--primary" onClick={() => { setCartOpen(false); document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" }); }}>Browse menu</button></div>
-                ) : (
-                  <div className="cart-lines">{cart.map((line) => <div className="cart-line" key={line.lineId}><div className="cart-line__info"><strong>{line.name}</strong>{line.variantLabel ? <small>{line.variantLabel}</small> : null}<span>{formatPrice(line.unitPrice)} each</span></div><div className="cart-line__controls"><div className="quantity-control"><button type="button" onClick={() => changeQuantity(line.lineId, -1)} aria-label={`Decrease ${line.name} quantity`}>−</button><span>{line.quantity}</span><button type="button" onClick={() => changeQuantity(line.lineId, 1)} aria-label={`Increase ${line.name} quantity`}>＋</button></div><strong>{formatPrice(line.unitPrice * line.quantity)}</strong><button type="button" className="remove-line" onClick={() => removeLine(line.lineId)}>Remove</button></div></div>)}</div>
-                )}
-
-                {cart.length > 0 ? (
-                  <>
-                    <div className="cart-form">
-                      <div className="cart-form__heading"><span className="mini-label">A FEW DETAILS</span><h3>Where should we send it?</h3></div>
-                      <label>Your name<input value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Name" autoComplete="name" /></label>
-                      <label>Phone number<input value={customerPhone} onChange={(event) => setCustomerPhone(event.target.value)} placeholder="03xx-xxxxxxx" inputMode="tel" autoComplete="tel" /></label>
-                      <label>Order type<select value={orderType} onChange={(event) => setOrderType(event.target.value as OrderType)}><option>Home delivery</option><option>Takeaway</option><option>Dine-in</option></select></label>
-                      {orderType === "Home delivery" ? <label>Delivery address<input value={customerAddress} onChange={(event) => setCustomerAddress(event.target.value)} placeholder="House, street, area" autoComplete="street-address" /></label> : <label>Address / pickup note<input value={customerAddress} onChange={(event) => setCustomerAddress(event.target.value)} placeholder="Optional" /></label>}
-                      <label>Payment preference<select value={paymentMethod} onChange={(event) => setPaymentMethod(event.target.value as PaymentMethod)}><option>Cash on Delivery</option><option>JazzCash</option><option>Easypaisa</option></select></label>
-                      <label>Order notes<textarea value={orderNotes} onChange={(event) => setOrderNotes(event.target.value)} placeholder="Extra sauce? No onions? Tell us here." rows={3} /></label>
-                    </div>
-                    <div className="cart-summary"><div><span>Subtotal</span><strong>{formatPrice(cartTotal)}</strong></div><small>Delivery charges, if any, are confirmed by the shop on WhatsApp.</small><div className="cart-total"><span>Order total</span><strong>{formatPrice(cartTotal)}</strong></div></div>
-                    {formError ? <p className="form-error" role="alert">{formError}</p> : null}
-                    <button type="button" className="button button--primary cart-checkout" onClick={sendWhatsAppOrder}><WhatsAppIcon /> Send order on WhatsApp <span>↗</span></button>
-                    <p className="cart-secure-note">No online payment needed. Confirm your order directly with Fry-Day House.</p>
-                  </>
-                ) : null}
-              </div>
-            </motion.aside>
-          </>
-        ) : null}
-      </AnimatePresence>
+      {cart.count > 0 ? (
+        <button className="floating-whatsapp" type="button" onClick={cart.openCart} aria-label={`Review ${cart.count} items and order on WhatsApp for ${money(cart.subtotal)}`}>
+          <WhatsAppIcon size={25} /><span>Order · {cart.count} · {money(cart.subtotal)}</span>
+        </button>
+      ) : (
+        <a className="floating-whatsapp" href={directWhatsApp} target="_blank" rel="noreferrer" aria-label="Chat with Fry-Day House on WhatsApp"><WhatsAppIcon size={25} /><span>Order on WhatsApp</span></a>
+      )}
 
       <AnimatePresence>
         {toast ? <motion.div className="toast-message" role="status" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 12 }}>{toast} <span>✓</span></motion.div> : null}
@@ -568,3 +279,4 @@ export default function FryDaySite() {
     </main>
   );
 }
+

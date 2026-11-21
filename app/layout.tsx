@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Bangers, Inter } from "next/font/google";
 import { siteConfig } from "@/lib/data";
+import { CartProvider } from "@/lib/cart";
 import "./globals.css";
+import "@/styles/menu.css";
 
 const displayFont = Bangers({
   subsets: ["latin"],
@@ -94,9 +96,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en-PK">
       <body className={`${displayFont.variable} ${bodyFont.variable}`}>
-        {children}
+        <CartProvider>{children}</CartProvider>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantSchema).replace(/</g, "\\u003c") }} />
       </body>
     </html>
   );
 }
+

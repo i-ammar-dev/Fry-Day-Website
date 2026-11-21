@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint .",
     "validate:data": "node scripts/validate-data.mjs"
@@ -27,3 +27,4 @@
     "typescript": "^5.9.3"
   }
 }
+
