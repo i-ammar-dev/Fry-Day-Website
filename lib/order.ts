@@ -90,4 +90,3 @@ export function buildWhatsAppUrl(args: {
 
   return `https://wa.me/${SITE.whatsappNumber}?text=${encodeURIComponent(msg)}`;
 }
-

@@ -278,4 +278,3 @@ export function useCart(): CartApi {
   if (!ctx) throw new Error("useCart must be used inside <CartProvider>");
   return ctx;
 }
-

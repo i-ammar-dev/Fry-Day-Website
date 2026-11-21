@@ -59,8 +59,7 @@ export default function ComboDeals({ eyebrow, title, description }: { eyebrow: s
     }
   }, []);
   return <div className="container"><div className="deals-header"><div className="section-heading"><span className="eyebrow"><span />{eyebrow}</span><h2 id="deals-title">{title.toUpperCase()}</h2><p>{description}</p></div><div className="deal-stamp" aria-hidden="true"><span>GOOD</span><strong>FOOD</strong><span>GOOD MOOD</span></div></div>
-    <div className="deals-grid">{COMBOS.map((combo, i) => <article className="deal-card" key={combo.id}><div className="deal-card__top"><span className="deal-number">0{i + 1}</span><span className="deal-label">BUILD IT</span></div><div className="deal-card__illustration" aria-hidden="true">{["🎓", "🍗", "🌯", "🍟"][i]}</div><h3>{combo.name} <span className="ml-2 text-sm text-[#F5B800]">×{cart.qtyForCombo(combo.id) || ""}</span></h3><p>{combo.description}</p><div className="deal-card__bottom"><strong>{money(combo.price)}</strong><button type="button" onClick={() => setBuilding(combo)}>Build your own <span>＋</span></button></div></article>)}</div>
+    <div className="deals-grid">{COMBOS.map((combo, i) => <article className="deal-card" key={combo.id}><div className="deal-card__top"><span className="deal-number">0{i + 1}</span><span className="deal-label">BUILD IT</span></div><div className="deal-card__illustration" aria-hidden="true">{["🎓", "🍗", "🌯", "🍟"][i]}</div><h3>{combo.name} <span className="ml-2 text-sm text-[#F5B800]">×{cart.qtyForCombo(combo.id) || ""}</span></h3><p>{combo.description}</p><div className="deal-card__bottom"><strong>{money(combo.price)}</strong><button type="button" className="text-[9px] font-extrabold text-[#FFF4DC]" onClick={() => setBuilding(combo)}>Build your own <span className="ml-1 text-[#F5B800]">＋</span></button></div></article>)}</div>
     {building && <ComboBuilder combo={building} close={() => setBuilding(null)} />}
   </div>;
 }
-
