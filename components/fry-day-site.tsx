@@ -10,6 +10,7 @@ import { plainInput, useCart } from "@/lib/cart";
 import { money } from "@/lib/order";
 import MenuApp from "@/components/menu/MenuApp";
 import StatusChip from "@/components/menu/StatusChip";
+import SitePhotoGallery from "@/components/site-photo-gallery";
 
 function Logo() {
   return (
@@ -115,9 +116,11 @@ export default function FryDaySite() {
       </header>
 
       <section className="hero-section" aria-labelledby="hero-title">
-        <div className="hero-noise" aria-hidden="true" />
-        <div className="hero-glow hero-glow--one" aria-hidden="true" />
-        <div className="hero-glow hero-glow--two" aria-hidden="true" />
+        <picture className="hero-background">
+          <source media="(min-width: 768px)" srcSet="/images/hero/hero-desktop.jpg" />
+          <Image src="/images/hero/hero-mobile.jpg" alt="" fill priority sizes="100vw" />
+        </picture>
+        <div className="hero-background-overlay" aria-hidden="true" />
         <div className="container hero-grid">
           <motion.div className="hero-copy" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
             <div className="hero-pill"><span className="live-dot" /> {pageContent.hero.eyebrow.toUpperCase()}</div>
@@ -132,19 +135,6 @@ export default function FryDaySite() {
             <div className="hero-footnote"><span>✦</span> {pageContent.hero.servicesLine}</div>
           </motion.div>
 
-          <motion.div className="hero-art" initial={{ opacity: 0, scale: 0.92, rotate: 2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ duration: 0.8, delay: 0.12 }}>
-            <div className="hero-art__halo" />
-            <div className="hero-image-frame">
-              <Image src="/images/hero.svg" alt="Sample burger and crispy fries artwork for Fry-Day House" fill priority sizes="(max-width: 900px) 92vw, 48vw" className="hero-image" />
-              <div className="hero-image-shade" />
-            </div>
-            <div className="hero-sticker hero-sticker--top"><span>100%</span><small>CRAVE<br />WORTHY</small></div>
-            <div className="hero-sticker hero-sticker--bottom"><strong>FRY</strong><small>HARD<br />EAT GOOD</small></div>
-            <div className="floating-fries floating-fries--one" aria-hidden="true">🍟</div>
-            <div className="floating-fries floating-fries--two" aria-hidden="true">✦</div>
-            <div className="steam steam--one" aria-hidden="true" />
-            <div className="steam steam--two" aria-hidden="true" />
-          </motion.div>
         </div>
         <div className="hero-bottom-line"><span>BURGERS</span><i /> <span>SHAWARMA</span><i /> <span>LOADED FRIES</span><i /> <span>GOOD TIMES</span></div>
       </section>
@@ -206,7 +196,10 @@ export default function FryDaySite() {
       <section className="desi-strip" id="story">
         <div className="container desi-strip__inner">
           <div className="desi-strip__copy"><span className="eyebrow"><span /> {pageContent.vibe.eyebrow.toUpperCase()}</span><h2>{pageContent.vibe.titleLineOne.toUpperCase()}<br /><em>{pageContent.vibe.titleLineTwo.toUpperCase()}</em></h2><p>{pageContent.vibe.description}</p><a href="#menu" className="button button--light">{pageContent.vibe.button} <span>↗</span></a></div>
-          <div className="desi-strip__visual"><div className="desi-ring" /><span className="desi-emoji desi-emoji--burger">🍔</span><span className="desi-emoji desi-emoji--fries">🍟</span><span className="desi-emoji desi-emoji--pepper">🌶️</span><span className="desi-note">FULL<br />FLAVOUR<br />ENERGY</span></div>
+          <figure className="vibe-photo">
+            <Image src="/images/gallery/shop-cart-closeup.jpg" alt="Close-up of the Fry-Day House food cart at Trust Colony Food Chowk, Bahawalpur." fill sizes="(max-width: 720px) 100vw, 40vw" loading="lazy" />
+            <figcaption>THE FRY-DAY VIBE</figcaption>
+          </figure>
         </div>
       </section>
 
@@ -229,11 +222,7 @@ export default function FryDaySite() {
       <section className="gallery-section section-pad" aria-labelledby="gallery-title">
         <div className="container">
           <div className="gallery-heading"><SectionHeading id="gallery-title" eyebrow={pageContent.gallery.eyebrow} title={pageContent.gallery.title.toUpperCase()} description={pageContent.gallery.description} /><span className="gallery-hashtag">{pageContent.gallery.hashtag}</span></div>
-          <div className="gallery-grid">
-            <figure className="gallery-photo gallery-photo--large"><Image src="/images/shop-1.svg" alt="Sample artwork placeholder for Fry-Day House counter photography" fill sizes="(max-width: 700px) 100vw, 55vw" loading="lazy" /><figcaption><span>01 / THE COUNTER</span><strong>{pageContent.gallery.captions[0]}</strong></figcaption></figure>
-            <figure className="gallery-photo"><Image src="/images/shop-2.svg" alt="Sample artwork placeholder for Fry-Day House outdoor seating photography" fill sizes="(max-width: 700px) 100vw, 40vw" loading="lazy" /><figcaption><span>02 / THE HANGOUT</span><strong>{pageContent.gallery.captions[1]}</strong></figcaption></figure>
-            <figure className="gallery-photo"><Image src="/images/shop-3.svg" alt="Sample artwork placeholder for a Fry-Day House fast-food platter photo" fill sizes="(max-width: 700px) 100vw, 40vw" loading="lazy" /><figcaption><span>03 / THE GOOD STUFF</span><strong>{pageContent.gallery.captions[2]}</strong></figcaption></figure>
-          </div>
+          <SitePhotoGallery />
         </div>
       </section>
 
@@ -249,6 +238,10 @@ export default function FryDaySite() {
             <div className="find-actions"><a className="button button--primary" href={`tel:${siteConfig.phoneLink}`}>{pageContent.findUs.call} <span>↗</span></a><a className="button button--outline" href={directWhatsApp} target="_blank" rel="noreferrer"><WhatsAppIcon size={18} /> {pageContent.findUs.whatsapp}</a></div>
           </div>
           <div className="find-side">
+            <figure className="find-photo">
+              <Image src="/images/gallery/shop-front-wide.jpg" alt="Fry-Day House food cart at night, Trust Colony Food Chowk, Bahawalpur." fill sizes="(max-width: 720px) 100vw, 42vw" loading="lazy" />
+              <figcaption>FIND US AT TRUST COLONY FOOD CHOWK</figcaption>
+            </figure>
             <div className="map-card"><iframe title="Map showing Trust Colony Food Chowk, Bahawalpur" src={siteConfig.mapEmbedUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" /><div className="map-label"><span>📍</span><div><strong>FRY-DAY HOUSE</strong><small>Trust Colony Food Chowk</small></div></div></div>
             <div className="hours-card"><div className="hours-card__header"><div><span className="mini-label">PLAN YOUR VISIT</span><h3>{pageContent.findUs.hoursTitle}</h3></div><span className="hours-icon">◷</span></div><div className="hours-list">{siteConfig.openingHours.map((row) => <div className="hours-row" key={row.day}><span>{row.day}</span><strong>{row.hours}</strong></div>)}</div><p>{pageContent.findUs.hoursNote}</p></div>
           </div>
