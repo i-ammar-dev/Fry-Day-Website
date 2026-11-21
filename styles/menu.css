@@ -1,0 +1,14 @@
+/* Import once, e.g. in app/layout.tsx:  import "@/styles/menu.css"; */
+
+@keyframes fryday-pop {
+  0% { transform: scale(0.6); }
+  60% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+.pop { animation: fryday-pop 0.35s ease-out; }
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Uses your existing display font. If you do not have a .font-display class yet: */
+.font-display { font-family: var(--font-display, "Lilita One", "Bangers", system-ui, sans-serif); }
