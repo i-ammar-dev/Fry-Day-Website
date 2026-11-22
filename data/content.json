@@ -78,8 +78,7 @@
     "directions": "Get directions",
     "call": "Call Fry-Day",
     "whatsapp": "WhatsApp us",
-    "hoursTitle": "Opening hours",
-    "hoursNote": "Edit these times in data/site.json."
+    "hoursTitle": "Opening hours"
   },
   "footer": {
     "description": "Big bites. Bold nights. Your food-chowk fix, right here in Bahawalpur.",
@@ -87,7 +86,6 @@
     "explore": "Explore",
     "contact": "Get in touch",
     "social": "Follow the crunch",
-    "socialNote": "Social links are editable in data/site.json.",
     "copyright": "All bites reserved."
   }
 }

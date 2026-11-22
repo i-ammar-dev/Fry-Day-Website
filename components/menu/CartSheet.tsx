@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { SITE } from "@/config/site";
 import { ITEM_BY_ID } from "@/data/menu";
 import { plainInput, useCart } from "@/lib/cart";
@@ -127,9 +128,10 @@ export default function CartSheet({ onClose }: { onClose: () => void }) {
         </div>
 
         {cart.lines.length === 0 ? (
-          <p className="py-10 text-center text-[#FFF4DC]/60">
-            Your cart is empty. Bhook lagi? Add something tasty!
-          </p>
+          <div className="flex flex-col items-center py-8 text-center">
+            <Image src="/images/logo.svg" alt="Fry-Day House logo" width={180} height={145} />
+            <p className="mt-2 text-[#FFF4DC]/60">Your cart is empty. Bhook lagi? Add something tasty!</p>
+          </div>
         ) : (
           <>
             <ul className="mb-4 divide-y divide-white/10">
