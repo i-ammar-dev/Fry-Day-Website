@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Bangers, Inter } from "next/font/google";
+import { Barlow_Condensed, Inter } from "next/font/google";
 import { siteConfig } from "@/lib/data";
 import { CartProvider } from "@/lib/cart";
 import "./globals.css";
 import "@/styles/menu.css";
 
-const displayFont = Bangers({
+const displayFont = Barlow_Condensed({
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "500", "600", "700"],
   variable: "--font-display",
   display: "swap",
 });
@@ -29,6 +29,15 @@ export const metadata: Metadata = {
   description:
     "Craving zinger burgers, loaded fries, shawarmas and desi-fusion street food? Visit Fry-Day House at Trust Colony Food Chowk, Bahawalpur, or order on WhatsApp.",
   applicationName: "Fry-Day House",
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   keywords: [
     "fast food in Bahawalpur",
     "Fry-Day House",
@@ -102,4 +111,3 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     </html>
   );
 }
-

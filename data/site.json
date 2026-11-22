@@ -11,13 +11,13 @@
   "email": "Frydayhouse@gmail.com",
   "services": ["Dine-in", "Takeaway", "Home delivery"],
   "openingHours": [
-    { "day": "Monday", "hours": "Set opening hours" },
-    { "day": "Tuesday", "hours": "Set opening hours" },
-    { "day": "Wednesday", "hours": "Set opening hours" },
-    { "day": "Thursday", "hours": "Set opening hours" },
-    { "day": "Friday", "hours": "Set opening hours" },
-    { "day": "Saturday", "hours": "Set opening hours" },
-    { "day": "Sunday", "hours": "Set opening hours" }
+    { "day": "Monday", "hours": "6:00 PM to 1:00 AM" },
+    { "day": "Tuesday", "hours": "6:00 PM to 1:00 AM" },
+    { "day": "Wednesday", "hours": "6:00 PM to 1:00 AM" },
+    { "day": "Thursday", "hours": "6:00 PM to 1:00 AM" },
+    { "day": "Friday", "hours": "6:00 PM to 1:00 AM" },
+    { "day": "Saturday", "hours": "6:00 PM to 1:00 AM" },
+    { "day": "Sunday", "hours": "6:00 PM to 1:00 AM" }
   ],
   "paymentMethods": ["Cash on Delivery", "JazzCash", "Easypaisa"],
   "featuredItemIds": ["zinger-tower-cheese", "fully-loaded", "zinger-platter", "loaded-fries", "wings", "fry-day-house-special-wrap"],

@@ -23,15 +23,6 @@ const photos = [
     className: "gallery-photo",
   },
   {
-    src: "/images/gallery/shop-cart-closeup.jpg",
-    alt: "Close view of the Fry-Day House food cart at night in Bahawalpur.",
-    caption: "Made for the craving.",
-    label: "THE COUNTER",
-    width: 1112,
-    height: 1600,
-    className: "gallery-photo",
-  },
-  {
     src: "/images/gallery/shop-corner-portrait.jpg",
     alt: "Corner view of Fry-Day House and its A-frame board at Trust Colony Food Chowk, Bahawalpur.",
     caption: "Meet you at the chowk.",
@@ -101,7 +92,15 @@ export default function SitePhotoGallery() {
             onClick={(event) => { returnFocus.current = event.currentTarget; setActiveIndex(index); }}
             aria-label={`Enlarge photo ${index + 1} of ${photos.length}: ${photo.caption}`}
           >
-            <Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 720px) 50vw, (max-width: 980px) 25vw, 25vw" loading="lazy" />
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              sizes={photo.className.includes("gallery-photo--wide")
+                ? "(max-width: 720px) 100vw, (max-width: 980px) 66vw, 66vw"
+                : "(max-width: 720px) 50vw, (max-width: 980px) 33vw, 33vw"}
+              loading="lazy"
+            />
             <span className="gallery-photo__caption"><span>{String(index + 1).padStart(2, "0")} / {photo.label}</span><strong>{photo.caption}</strong></span>
           </button>
         ))}

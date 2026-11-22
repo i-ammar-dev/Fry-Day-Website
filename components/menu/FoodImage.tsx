@@ -46,7 +46,7 @@ export default function FoodImage({
         />
       ) : (
         <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-[radial-gradient(circle_at_50%_40%,rgba(255,106,0,0.25),transparent_65%)]">
-          <span className="grid h-12 w-12 place-items-center rounded-2xl border border-[#F5B800]/50 bg-[#F5B800]/15 text-2xl" aria-label="Fry-Day House chef logo">👨‍🍳</span>
+          <Image src="/images/logo-mark.png" alt="Fry-Day House logo" width={90} height={50} className="h-12 w-[86px] object-contain" />
           <span className="text-5xl drop-shadow" aria-hidden="true">{EMOJI[category]}</span>
           <span className="font-display text-xs tracking-widest text-[#F5B800]/80">
             FRY&apos;DAY HOUSE

@@ -9,14 +9,17 @@ export const SITE = {
   address: siteJson.location,
   email: siteJson.email,
 
+  // Change only this switch to publish the example deal builder.
+  showDeals: false,
+
   currency: "Rs.",
   deliveryFee: 100,
   freeDeliveryAbove: 1500,
   minimumOrder: 500,
 
   hours: {
-    open: "16:00",
-    close: "02:00",
+    open: "18:00",
+    close: "01:00",
     timeZone: "Asia/Karachi",
   },
 

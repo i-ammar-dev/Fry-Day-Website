@@ -51,18 +51,14 @@ export default function ItemCard({
 
   return (
     <article
-      className={`relative flex flex-col overflow-hidden rounded-2xl border bg-[#141414] transition-all duration-300 ${
-        selected
-          ? "border-[#FF6A00] shadow-[0_0_20px_rgba(255,106,0,0.35)]"
-          : "border-white/10"
-      }`}
+      className={`menu-item-card relative flex flex-col overflow-hidden rounded-2xl border ${selected ? "is-selected" : ""}`}
     >
-      <div className="relative">
-        <button type="button" onClick={() => setPhotoOpen(true)} className="block w-full text-left" aria-label={`Preview ${item.name} photo`}>
-          <FoodImage id={item.imageId} name={item.name} category={item.category} />
+      <div className="menu-item-card__media relative">
+        <button type="button" onClick={() => setPhotoOpen(true)} className="menu-item-card__photo-button block w-full text-left" aria-label={`Preview ${item.name} photo`}>
+          <FoodImage id={item.imageId} name={item.name} category={item.category} className="menu-item-card__food-image" />
         </button>
         {bestSeller && (
-          <span className="absolute left-2 top-2 rounded-full bg-[#FF6A00] px-2 py-0.5 text-[11px] font-bold text-black">
+          <span className="menu-best-seller absolute left-2 top-2 rounded-full bg-[#FF6A00] px-2 py-0.5 text-[11px] font-bold text-black">
             🔥 Best Seller
           </span>
         )}
@@ -84,13 +80,13 @@ export default function ItemCard({
             <div className="relative"><FoodImage id={item.imageId} name={item.name} category={item.category} /></div>
             <div className="p-5"><div className="flex items-start justify-between gap-3"><div><h2 className="font-display text-2xl text-[#F5B800]">{item.name}</h2><p className="mt-1 text-sm text-[#FFF4DC]/65">{item.description}</p></div><button onClick={() => setPhotoOpen(false)} aria-label="Close" className="min-h-[44px] min-w-[44px] text-2xl text-[#FFF4DC]/70">×</button></div>
               <p className="my-4 font-display text-xl text-[#F5B800]">{sized ? `from ${money(basePrice(item, 0))}` : money(basePrice(item, null))}</p>
-              <button onClick={() => { setPhotoOpen(false); if (item.customizable) onCustomize(item); else addDirect(); }} className="min-h-[48px] w-full rounded-xl bg-[#F5B800] font-extrabold text-black">{item.customizable ? "Add or customize" : "Add to cart"}</button>
+              <button onClick={() => { setPhotoOpen(false); if (item.customizable) onCustomize(item); else addDirect(); }} aria-label={item.customizable ? `Customize and add ${item.name}` : `Add ${item.name}`} className="menu-add-button menu-preview-add min-h-[48px] w-full rounded-xl bg-[#F5B800] font-extrabold text-black">Add</button>
             </div>
           </div>
         </div>
       )}
 
-      <div className="flex flex-1 flex-col gap-2 p-3">
+      <div className="menu-item-card__body flex flex-1 flex-col gap-2 p-3">
         <div className="flex flex-wrap gap-1">
           {item.tags?.map((t) => (
             <span
@@ -102,8 +98,8 @@ export default function ItemCard({
           ))}
         </div>
 
-        <h3 className="font-display text-lg leading-tight text-[#FFF4DC]">{item.name}</h3>
-        <p className="text-xs leading-snug text-[#FFF4DC]/60">{item.description}</p>
+        <h3 className="menu-item-card__name font-display text-lg leading-tight text-[#FFF4DC]">{item.name}</h3>
+        <p className="menu-item-card__description text-xs leading-snug text-[#FFF4DC]/60">{item.description}</p>
 
         {sized && item.sizeLabels && (
           <div className="mt-1 flex gap-2" role="radiogroup" aria-label="Size">
@@ -113,9 +109,9 @@ export default function ItemCard({
                 role="radio"
                 aria-checked={size === i}
                 onClick={() => setSize(i)}
-                className={`min-h-[44px] flex-1 rounded-xl border text-xs font-bold ${
+                className={`menu-item-card__size-option min-h-[44px] flex-1 rounded-xl border text-xs font-bold ${
                   size === i
-                    ? "border-[#F5B800] bg-[#F5B800] text-black"
+                    ? "is-selected border-[#F5B800] bg-[#F5B800] text-black"
                     : "border-white/15 text-[#FFF4DC]/80"
                 }`}
               >
@@ -126,43 +122,44 @@ export default function ItemCard({
         )}
 
         {sizeSummary && (
-          <p className="text-xs font-semibold text-[#F5B800]">In cart: {sizeSummary}</p>
+          <p className="menu-item-card__cart-note text-xs font-semibold text-[#F5B800]">In cart: {sizeSummary}</p>
         )}
         {!sized && item.customizable && selected && (
-          <p className="text-xs font-semibold text-[#F5B800]">
+          <p className="menu-item-card__cart-note text-xs font-semibold text-[#F5B800]">
             In cart: {total} (tap Add for another style)
           </p>
         )}
 
-        <div className="mt-auto flex items-center justify-between gap-2 pt-2">
-          <span className="font-display text-xl text-[#F5B800]">
+        <div className="menu-item-card__footer mt-auto flex items-center justify-between gap-2 pt-2">
+          <span className="menu-item-card__price font-display text-xl text-[#F5B800]">
             {sized ? `from ${money(basePrice(item, 0))}` : money(basePrice(item, null))}
           </span>
 
           {item.customizable ? (
-            <div className="flex items-center gap-2">
+            <div className="menu-item-card__actions flex items-center gap-2">
               {selected && (
                 <button
                   aria-label={`Remove one ${item.name}`}
                   onClick={() => cart.removeOne(item.id)}
-                  className="min-h-[44px] min-w-[44px] touch-manipulation rounded-xl border border-white/20 text-xl font-bold text-[#FFF4DC]"
+                  className="menu-stepper-button min-h-[44px] min-w-[44px] touch-manipulation rounded-xl border border-white/20 text-xl font-bold text-[#FFF4DC]"
                 >
                   −
                 </button>
               )}
               <button
                 onClick={() => onCustomize(item)}
-                className="min-h-[44px] touch-manipulation rounded-xl bg-[#F5B800] px-4 text-sm font-extrabold text-black active:scale-95"
+                aria-label={`Customize and add ${item.name}`}
+                className="menu-add-button min-h-[44px] touch-manipulation rounded-xl bg-[#F5B800] px-4 text-sm font-extrabold text-black active:scale-95"
               >
-                Add +
+                Add
               </button>
             </div>
           ) : qtyHere > 0 ? (
-            <div className="flex items-center gap-1 rounded-xl border border-[#F5B800]/60 bg-black/40">
+            <div className="menu-item-card__actions menu-item-card__quantity flex items-center gap-1 rounded-xl border border-[#F5B800]/60 bg-black/40">
               <button
                 aria-label={`Remove one ${item.name}`}
                 onClick={() => cart.setQty(key, qtyHere - 1)}
-                className="min-h-[44px] min-w-[44px] touch-manipulation text-xl font-bold text-[#F5B800]"
+                className="menu-stepper-button min-h-[44px] min-w-[44px] touch-manipulation text-xl font-bold text-[#F5B800]"
               >
                 −
               </button>
@@ -172,7 +169,7 @@ export default function ItemCard({
               <button
                 aria-label={`Add one ${item.name}`}
                 onClick={addDirect}
-                className="min-h-[44px] min-w-[44px] touch-manipulation text-xl font-bold text-[#F5B800]"
+                className="menu-stepper-button min-h-[44px] min-w-[44px] touch-manipulation text-xl font-bold text-[#F5B800]"
               >
                 +
               </button>
@@ -180,9 +177,10 @@ export default function ItemCard({
           ) : (
             <button
               onClick={addDirect}
-              className="min-h-[44px] touch-manipulation rounded-xl bg-[#F5B800] px-4 text-sm font-extrabold text-black active:scale-95"
+              aria-label={`Add ${item.name}`}
+              className="menu-add-button min-h-[44px] touch-manipulation rounded-xl bg-[#F5B800] px-4 text-sm font-extrabold text-black active:scale-95"
             >
-              Add +
+              Add
             </button>
           )}
         </div>

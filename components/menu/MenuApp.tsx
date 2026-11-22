@@ -44,26 +44,28 @@ function MenuInner() {
   const goTo = (id: CategoryId) => {
     setActive(id);
     window.requestAnimationFrame(() => {
-      sectionRefs.current[id]?.scrollIntoView({ behavior: "smooth", block: "start" });
+      const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+      sectionRefs.current[id]?.scrollIntoView({ behavior, block: "start" });
     });
   };
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 pb-32 pt-6">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+    <div className="menu-app mx-auto w-full max-w-6xl px-4 pb-32 pt-6">
+      <div className="menu-section-title">
         <h2 id="menu-title" className="font-display text-3xl text-[#F5B800]">Our Menu</h2>
+        <span aria-hidden="true" />
       </div>
 
-      <div className="sticky top-[150px] z-30 -mx-4 border-b border-white/10 bg-[#0D0D0D]/95 px-4 py-3 backdrop-blur md:top-[108px]">
+      <div className="menu-category-toolbar sticky top-[150px] z-30 -mx-4 border-b border-white/10 bg-[#0D0D0D]/95 px-4 py-3 backdrop-blur md:top-[108px]">
         <input
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search your craving..."
           aria-label="Search menu"
-          className="mb-3 min-h-[44px] w-full rounded-xl border border-white/15 bg-black/50 px-4 text-sm text-[#FFF4DC] placeholder:text-[#FFF4DC]/40"
+          className="menu-search-input mb-3 min-h-[44px] w-full rounded-xl border border-white/15 bg-black/50 px-4 text-sm text-[#FFF4DC] placeholder:text-[#FFF4DC]/40"
         />
-        <nav className="no-scrollbar flex gap-2 overflow-x-auto" aria-label="Menu categories">
+        <nav className="menu-category-tabs no-scrollbar flex gap-2 overflow-x-auto" aria-label="Menu categories">
           {CATEGORIES.map((c) => (
             <button
               key={c.id}
@@ -71,12 +73,8 @@ function MenuInner() {
                 setQuery("");
                 goTo(c.id);
               }}
-              aria-current={active === c.id && !q}
-              className={`min-h-[44px] shrink-0 rounded-full border px-4 text-sm font-bold ${
-                active === c.id && !q
-                  ? "border-[#F5B800] bg-[#F5B800] text-black"
-                  : "border-white/15 text-[#FFF4DC]/80"
-              }`}
+              aria-current={active === c.id && !q ? "true" : undefined}
+              className={`menu-category-tab min-h-[44px] shrink-0 rounded-full border px-4 text-sm font-bold ${active === c.id && !q ? "is-active" : ""}`}
             >
               {c.emoji} {c.label}
             </button>
@@ -89,7 +87,7 @@ function MenuInner() {
           <p className="mb-3 text-sm text-[#FFF4DC]/60">
             {results.length} result{results.length === 1 ? "" : "s"} for &quot;{query}&quot;
           </p>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="menu-item-grid grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {results.map((m) => (
               <ItemCard key={m.id} item={m} onCustomize={setCustomizing} />
             ))}
@@ -103,12 +101,12 @@ function MenuInner() {
             ref={(el) => {
               sectionRefs.current[c.id] = el;
             }}
-            className="scroll-mt-36 pt-8"
+            className="menu-category-section scroll-mt-36 pt-8"
           >
-            <h3 className="mb-4 font-display text-2xl text-[#FF6A00]">
-              {c.emoji} {c.label}
+            <h3 className="menu-section-heading mb-4 font-display text-2xl text-[#FF6A00]">
+              <span aria-hidden="true">{c.emoji}</span> {c.label}
             </h3>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="menu-item-grid grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {MENU.filter((m) => m.category === c.id).map((m) => (
                 <ItemCard key={m.id} item={m} onCustomize={setCustomizing} />
               ))}
